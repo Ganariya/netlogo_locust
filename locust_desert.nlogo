@@ -322,7 +322,7 @@ num-of-locusts
 num-of-locusts
 0
 100
-30.0
+50.0
 1
 1
 NIL
@@ -337,7 +337,7 @@ num-of-birds
 num-of-birds
 0
 100
-13.0
+0.0
 1
 1
 NIL
@@ -382,7 +382,7 @@ regrow-rate
 regrow-rate
 0
 100
-4.0
+5.0
 1
 1
 NIL
@@ -488,7 +488,7 @@ eat-locusts-rate
 eat-locusts-rate
 0
 100
-8.0
+4.0
 1
 1
 NIL
