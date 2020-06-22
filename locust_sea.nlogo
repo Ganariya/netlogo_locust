@@ -1,31 +1,405 @@
+;----------------------------
+; definition
+
+breed [locusts locust]
+breed [birds bird]
+
+
+locusts-own [
+  power
+  life
+]
+birds-own [
+  life
+]
+
+;----------------------------
+; main
+
+to setup
+  clear-all
+  setup-patches
+  setup-locusts
+  setup-birds
+  reset-ticks
+end
+
+to go
+  update-locusts
+  update-birds
+  update-patches
+  tick
+end
+
+
+;----------------------------
+; setup
+
+to setup-locusts
+  let can-dx (sea-left - min-pxcor - 1)
+  create-locusts num-of-locusts [
+    set xcor ((random can-dx) + min-pxcor)
+    set ycor random-pycor
+    set color violet
+    set shape "bug"
+    set power 2
+    set life 5
+  ]
+end
+
+to setup-birds
+  create-birds num-of-birds [
+    set color black
+    set life 5
+  ]
+end
+
+to setup-patches
+  ask patches [
+    ifelse pxcor >= sea-left and pxcor <= sea-right [
+      set pcolor blue
+    ] [
+      set pcolor brown
+    ]
+  ]
+end
+
+;----------------------------
+; update
+
+to update-locusts
+  move-locusts
+  eat-locusts
+  birth-locusts
+  death-locusts
+  calc-power-locusts
+end
+
+to update-birds
+
+end
+
+to update-patches
+  ask patches [
+    if pcolor = black and random 100 < regrow-rate [
+      set pcolor brown
+    ]
+  ]
+end
+
+
+;----------------------------
+; locusts
+
+to move-locusts
+  ask locusts [
+
+    ; まず方向を変える
+    rt (random 30) - 15
+
+    ; はみ出したら引き返す
+    if patch-at dx 0 = nobody [
+      set heading (- heading)
+    ]
+    forward power
+
+
+    ; 進んだ先が海なら戻す
+    if pcolor = blue [
+      rt 180
+      forward power
+    ]
+
+    ; 体力を減らす
+    set life (life - 1)
+  ]
+end
+
+to eat-locusts
+  ask locusts [
+
+    ; 生えてたら食べる
+    if pcolor = brown [
+      set pcolor black
+      set life (life + gain-life-from-grass)
+    ]
+  ]
+end
+
+to birth-locusts
+  ask locusts[
+
+    ; 仲間を増やせるなら増やす
+    if life > use-life-to-birth-locust [
+      set life (life - use-life-to-birth-locust)
+      hatch 1 [set life (use-life-to-birth-locust - 1)]
+      rt random 360
+    ]
+
+  ]
+end
+
+to death-locusts
+  ask locusts [
+    if life <= 0 [
+      die
+    ]
+  ]
+end
+
+to calc-power-locusts
+  ask locusts [
+
+    let np 0
+    let x xcor
+    let y ycor
+
+    ; 近くnマスにいるバッタを取得する
+    ask other locusts[
+      let ddx (abs (xcor - x))
+      let ddy (abs (ycor - y))
+      if ddx + ddy <= can-see-of-locusts [
+        set np (np + 1)
+      ]
+    ]
+    set power np
+
+    ifelse show-power?
+    [set label power]
+    [set label ""]
+  ]
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
-10
-647
-448
+514
+85
+1183
+755
 -1
 -1
-13.0
+8.1605
 1
 10
 1
 1
 1
 0
+0
 1
 1
-1
--16
-16
--16
-16
+-40
+40
+-40
+40
 0
 0
 1
 ticks
 30.0
+
+BUTTON
+94
+85
+160
+118
+NIL
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+17
+85
+80
+118
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+35
+164
+207
+197
+num-of-locusts
+num-of-locusts
+0
+100
+20.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+35
+211
+207
+244
+num-of-birds
+num-of-birds
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+35
+262
+207
+295
+sea-left
+sea-left
+min-pxcor
+max-pxcor
+-10.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+35
+310
+207
+343
+sea-right
+sea-right
+sea-left
+max-pxcor
+10.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+35
+359
+207
+392
+regrow-rate
+regrow-rate
+0
+100
+4.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+33
+404
+208
+437
+gain-life-from-grass
+gain-life-from-grass
+0
+30
+3.0
+1
+1
+NIL
+HORIZONTAL
+
+SWITCH
+285
+160
+425
+193
+show-power?
+show-power?
+1
+1
+-1000
+
+SLIDER
+31
+454
+233
+487
+use-life-to-birth-locust
+use-life-to-birth-locust
+0
+100
+30.0
+1
+1
+NIL
+HORIZONTAL
+
+PLOT
+43
+545
+394
+802
+Totals
+time
+totals
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"locusts" 1.0 0 -16777216 true "" "plot count locusts"
+"grass" 1.0 0 -8431303 true "" "plot count patches with [pcolor = brown]"
+
+SLIDER
+266
+275
+438
+308
+can-see-of-locusts
+can-see-of-locusts
+0
+20
+13.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
