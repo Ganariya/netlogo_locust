@@ -250,7 +250,6 @@ end
 
 
 
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 514
@@ -497,39 +496,65 @@ HORIZONTAL
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+サバクトビバッタは、局所的に密集すると群生相と呼ばれる形質に変化する。このとき、サバクトビバッタの群れは遠くまで移動するようになり、広範囲の作物が食い荒らされてしまう。
+
+このプログラムは、これらのサバクトビバッタの動きをシミュレーションする。
+
+When desert locusts are locally densely packed, they change into a trait called phase gregaria. At this time, the swarms of the desert locusts move far away, and a wide range of crops are eaten away.
+
+The program simulates the movement of these desert locusts.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+サバクトビバッタのエージェントは、周囲にいる他の個体の数に比例して、より遠くに飛ぶようになる。
+パラメータを設定することで、砂漠を乗り越えて、右側の草原に到達するサバクトビバッタの群れの創発をみることができる。
+
+また、アヒル (birds)によって、サバクトビバッタの数を減らし、右側の草地に到達する可能性を減らすことができる。
+
+The agent of the desert locust flies farther in proportion to the number of other individuals around it.
+By setting parameters, it is possible to see the emergence of a swarm of desert locusts that cross the desert and reach the grassland on the right.
+
+Ducks (birds) can also reduce the number of desert locusts and the likelihood of reaching the grassland on the right.
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+- num-of-locustsは、バッタの数を表すパラメータである。数が少ないと孤独相のため、移動せずそのまま死に絶える。
+- num-of-birdsは、アヒルの数を表すパラメータである。
+- desert-leftとdesert-rightは中央の砂漠のx座標の範囲を表す。regrow-rateは草の再生率であり、値が大きいほどより高い確率で草が再生する。
+- gain-life-from-grassは、サバクトビバッタが草を食べることで得られる体力である。この値が大きいほどサバクトビバッタは体力が増加し、多くの子供を生む。
+- use-life-to-birth-locustはサバクトビバッタが子供を生むために必要な体力を表す。
+- can-see-of-locustsは、あるサバクトビバッタが周囲何マスのサバクトビバッタを見ることができるかを表す。この値が大きいほど、サバクトビバッタは孤独相から群生相に変化し遠くまで移動してしまう。
+- move_per_seeは、can-see-of-locustsで定まる個体数を割る単位である。つまり、周囲にいるバッタがmove_per_seeいるごとに１だけさらに移動する。そのため、move_per_seeが小さいほどサバクトビバッタは遠くまで移動するようになる。eat-locusts-rateは、アヒルがどれくらいの割合で周囲のサバクトビバッタを食べるかを表す。
+- show-power?はサバクトビバッタの今の移動距離を表すかのスイッチでありオンにすると移動距離が示される。
 
-## THINGS TO NOTICE
+----
 
-(suggested things for the user to notice while running the model)
-
-## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+- num-of-locusts is a parameter representing the number of locusts. If the number is small, they die without moving.
+- num-of-birds is a parameter that represents the number of ducks.
+- desert-left and desert-right represent the x-coordinate range of the central desert. The regrow-rate is the regrowth rate of grass, and the higher the regrowth rate, the higher the rate.
+- gain-life-from-grass is the physical strength that a desert locust gains by eating grass. The higher this value is, the stronger the body strength of the desert locust and the more children it produces.
+- use-life-to-birth locust indicates the physical strength required for a desert locust to bear a child.
+- Can-see-of-locusts indicates how many swarms a swarf grasshopper can see around it. The higher the value, the more the desert locust changes from a solitary phase to a colonial phase and migrates far away.
+- move_per_see is the number of individuals divided by can-see-of-locusts. That is, one more movement occurs for each move_per_see in the surrounding locusts. Therefore, the smaller the move_per_see is, the farther the grasshopper migrates. The eat-locusts-rate represents the rate at which the duck eats the surrounding desert locusts.
+- show-power? is a switch indicating the current travel distance of the desert locust, and when turned on, the travel distance is indicated.
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
 
-## NETLOGO FEATURES
+- 気温や天候などの外的要因の追加
+- 世代変化の追加
 
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+---
 
-## RELATED MODELS
+- Addition of external factors such as temperature and weather
+- Addition of generation Change
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+- Ariel, Gil, and Amir Ayali. "Locust collective motion and its modeling." PLoS Computational Biology 11.12 (2015): e1004522.
+- Zhang, Long, et al. "Locust and grasshopper management." Annual review of entomology 64 (2019): 15-34.
+
 @#$#@#$#@
 default
 true
